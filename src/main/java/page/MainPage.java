@@ -16,9 +16,6 @@ import java.util.concurrent.TimeUnit;
 public class MainPage {
     protected WebDriver driver;
 
-    @Getter
-    @Setter
-
     @FindBy(id = "at-cv-lightbox-close")
     WebElement closeBox;
 

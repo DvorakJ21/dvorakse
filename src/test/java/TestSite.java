@@ -1,20 +1,34 @@
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import page.FirstFormPage;
 import page.MainPage;
 
-public class TestSite extends BeforeTest {
+import javax.swing.text.StyledEditorKit;
+
+public class TestSite {
+
+    private WebDriver driver;
+
+    @BeforeEach
+    public void beforeClass() {
+        System.setProperty("webdriver.chrome.driver", "C:/bin/chromedriver.exe");
+        ChromeOptions options = new ChromeOptions();
+
+        driver = new ChromeDriver(options);
+        driver.get("https://www.seleniumeasy.com/test/");
+    }
 
 
-
-@Test
+    @Test
     public void FillTestForms() throws InterruptedException {
     String message = "test Jirka";
     int a = 1;
     int b = 2;
 
-    MainPage mainPage = openUrl("https://www.seleniumeasy.com/test/");
+    MainPage mainPage = new MainPage(driver);
     mainPage.closePopUp();
     FirstFormPage firstFormPage = mainPage.navigateToSimpleForDemo();
     firstFormPage.fillMessage(message);
@@ -25,14 +39,17 @@ public class TestSite extends BeforeTest {
     Assertions.assertTrue(isMessageCorrect, "Your message doesn't contain value: " + message);
     System.out.println("Your message contain value: " + message);
 
+    firstFormPage.FillValueA(a);
+    firstFormPage.FillValueB(b);
+    firstFormPage.pushButtonTotal();
+    Boolean result = firstFormPage.isTotalValueCorrect(a+b);
+    Assertions.assertTrue(result, "The result is incorrect");
+    System.out.println("The result is correct");
+    }
 
-
-
-
-
-
-
-
+    @AfterEach
+    public void tearDown() throws Exception {
+        driver.quit();
 
     }
 }
